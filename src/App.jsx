@@ -9,6 +9,8 @@ const App = () => {
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(false)
   const [errorMessage, setErrorMessage] = useState(null)
+  const [username, setUserName] = useState('')
+  const [password, setPassword] = useState('')
 
   useEffect(() => {
     noteService
@@ -34,7 +36,7 @@ const App = () => {
   }
 
   const toggleImportanceOf = id => {
-    const url = `http://localhost:3001/notes/${id}`
+    //const url = `http://localhost:3001/api/notes/${id}`
     const note = notes.find(n => n.id === id)
     const changedNote = { ...note, important: !note.important }
   
@@ -61,10 +63,37 @@ const App = () => {
     ? notes
     : notes.filter(note => note.important)
 
+  const handleLogin = (event) => {
+    event.preventDefault()
+    console.log('logging in with', username, password)
+  }
+
   return (
     <div>
       <h1>Notes</h1>
       <Notification message={errorMessage} />
+
+      <form onSubmit={handleLogin}>
+        <div>
+          username
+          <input
+          type="text"
+          value={Username}
+          name="Username"
+          onChange={({ target }) => setUserName(target.value)}
+          />
+        </div>
+        <div>
+          password
+          <input
+          type="password"
+          value={password}
+          name="Password"
+          onChange={({ target }) => setPassword(target.value)}
+          />
+        </div>
+        <button type="submit">login</button>
+      </form>
       <div>
         <button onClick={() => setShowAll(!showAll)}>
           show {showAll ? 'important' : 'all' }
@@ -86,6 +115,7 @@ const App = () => {
         />
         <button type="submit">save</button>
       </form> 
+      <Footer />
     </div>
   )
 }
